@@ -2,4 +2,7 @@
 *.pot
 *.pyc
 *.py~
+urls.py~
+settings.py~
+project_views.py~
 local_settings.py
