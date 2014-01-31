@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-TEMPLATE_DIRS = ( 
-	'/home/mooc-31/django-project/tree/template'
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'template')
 )
 
 # Quick-start development settings - unsuitable for production
@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,9 +51,9 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_LOADERS = (
-'django.template.loaders.filesystem.Loader',
-'django.template.loaders.app_directories.Loader',
-#django.template.loaders.eggs.Loader',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    #django.template.loaders.eggs.Loader',
 )
 
 
