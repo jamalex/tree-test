@@ -13,7 +13,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 TEMPLATE_DIRS = ( 
-	'/home/mooc-31/django-kalite/tree/template'
+	'/home/mooc-31/django-project/tree/template'
 )
 
 # Quick-start development settings - unsuitable for production
