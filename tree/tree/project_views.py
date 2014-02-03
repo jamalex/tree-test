@@ -5,15 +5,15 @@ from django.shortcuts import render
 
 
 def clean_node(request, node, addr, html):
-    flag = 0
-    # flag used to differentiate between parent node and leaf node in template
+    check = 0
+    # check used to differentiate between parent node and leaf node in template
     title = node['title']
     if node['slug'] == addr:
         if node['kind'] == 'Topic':
-            flag = 1
+            check = 1
         else:
-            flag = 0
-        html = render(request, 'project.html', {'title': title, 'node': node, 'flag': flag})
+            check = 0
+        html = render(request, 'project.html', {'title': title, 'node': node, 'check': check})
         return html
     else:
         if node['kind'] == 'Topic':
