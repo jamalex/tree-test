@@ -9,15 +9,15 @@
 {{title}} </h1> 
 
 {% if flag %}
-	{% for i,k in zipde %}
+	{% for child in node.children %}
 	<br> 
 	<br>
-	<a href="{{k}}" > {{i}} </a> </br> 
+	<a href="{{child.slug}}" > {{child.title}} </a> </br> 
 	{% endfor %}
 
 {% else %}
 	
-	<br> <p> <i> {{content_val}} <i> </p> 
+	<br> <p> <i> {{node.content}} <i> </p> 
 
 {% endif %}
 
