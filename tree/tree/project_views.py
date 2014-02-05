@@ -23,7 +23,4 @@ def load(request, addr):
             if node["slug"] != slug:
                 return HttpResponseNotFound("Path not found")
 
-        if node['kind'] == 'Topic':
-            return render(request, 'parent.html', {'node': node})
-        else:
-            return render(request, 'child.html', {'node': node})
+        return render(request, '%s.html' % node['kind'].lower(), {'node': node})

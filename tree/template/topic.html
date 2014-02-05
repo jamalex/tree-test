@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{node.title}}{% endblock %}
+
+{% block head %}{{node.title}}{% endblock %}
+
+
+{% block content %}
+
+{% for child in node.children %}
+<br>
+<p><a href="{{child.slug}}">{{child.title}}</a></p>
+{% endfor %}
+
+{% endblock %}
