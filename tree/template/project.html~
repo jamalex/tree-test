@@ -15,7 +15,17 @@
 <h1> 
 {% block head %} {% endblock %} </h1> 
 
-{% block content %} {% endblock %}
+{% if node.kind == 'Topic' %}
+	{% for child in node.children %}
+	<br>
+	<p> <a href="{{child.slug}}" > {{child.title}} </a> </p>
+	{% endfor %}
+
+{% else %}
+	
+	<br> <p> <i> {{node.content}} <i> </p> 
+
+{% endif %}
 
 </body>
 
