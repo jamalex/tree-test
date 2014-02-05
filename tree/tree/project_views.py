@@ -2,37 +2,28 @@ import json
 
 import django
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 
 
 def load(request, addr):
+
+    slug_list = [slug for slug in request.path.strip('/').split("/") if slug]
+
     with open('json1.json', 'r') as json1_file:
-        json1_data = json.load(json1_file)
-        node = json1_data
-        check = 0
-        a = 0
-        lis = request.path.strip('/').split("/")
-        for tag in lis:
-            if check == 0:
-                check = 1
-                if node['slug'] == lis[-1]:
+
+        node = {"children": [json.load(json1_file)], "kind": "Topic", "title": "Content"}
+
+        for slug in slug_list:
+            for child in node.get("children", []):
+                if child["slug"] == slug:
+                    node = child
                     break
-            else:
-                    if node['slug'] == lis[a] and node['kind'] == 'Topic':
-                        b = a + 1
-                        for child in node['children']:
-                            if child['slug'] == lis[b]:
-                                node = child
-                                a = a + 1
-                                break
-                            else:
-                                continue
-        if node['slug'] == lis[-1]:
-            link = settings.MEDIA_URL + "styles.css"
-            if node['kind'] == 'Topic':
-                return render(request, 'parent.html', {'node': node, 'link': link})
-            else:
-                return render(request, 'child.html', {'node': node, 'link': link})
+
+            if node["slug"] != slug:
+                return HttpResponseNotFound("Path not found")
+
+        if node['kind'] == 'Topic':
+            return render(request, 'parent.html', {'node': node})
         else:
-            return HttpResponse("Invalid Url")
+            return render(request, 'child.html', {'node': node})
