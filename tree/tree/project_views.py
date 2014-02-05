@@ -8,7 +8,7 @@ from django.shortcuts import render
 
 def load(request, addr):
 
-    slug_list = [slug for slug in request.path.strip('/').split("/") if slug]
+    slug_list = [slug for slug in addr.strip('/').split("/") if slug]
 
     with open('json1.json', 'r') as json1_file:
 
