@@ -1,26 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+"http://www.w3.org/TR/html4/loose.dtd">
+
 <html> 
+<head>
+ 
+<link rel="stylesheet" type="text/css" href = "{{ link }}" >
+</head>
+<title>{% block title %} {% endblock %}
+</title>
 
-<title>{{title}}
-</title> 
 
-<body bgcolor='#FAF0E6' style ="text-align:center;">
+<body>
 
-<h1 style="margin-bottom:0;text-align:center;background-color: #87CEFF;"> 
-{{title}} </h1> 
+<h1> 
+{% block head %} {% endblock %} </h1> 
 
-{% if check %}
-	{% for child in node.children %}
-	<br> 
-	<br>
-	<a href="{{child.slug}}" > {{child.title}} </a> </br> 
-	{% endfor %}
-
-{% else %}
-	
-	<br> <p> <i> {{node.content}} <i> </p> 
-
-{% endif %}
+{% block content %} {% endblock %}
 
 </body>
 
 </html>
+

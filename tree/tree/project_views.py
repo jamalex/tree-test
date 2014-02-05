@@ -1,31 +1,38 @@
-import django
 import json
+
+import django
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 
 
-def clean_node(request, node, addr, html):
-    check = 0
-    # check used to differentiate between parent node and leaf node in template
-    title = node['title']
-    if node['slug'] == addr:
-        if node['kind'] == 'Topic':
-            check = 1
-        else:
-            check = 0
-        html = render(request, 'project.html', {'title': title, 'node': node, 'check': check})
-        return html
-    else:
-        if node['kind'] == 'Topic':
-            for child in node['children']:
-                html = clean_node(request, child, addr, html)
-    	return html
-
-
-# load function opens the json file
 def load(request, addr):
-    html = " "
-    json1_file = open('json1.json')
-    json1_data = json.load(json1_file)
-    html = clean_node(request, json1_data, addr, html)
-    return HttpResponse(html)
+    with open('json1.json', 'r') as json1_file:
+        json1_data = json.load(json1_file)
+        node = json1_data
+        check = 0
+        a = 0
+        lis = request.path.strip('/').split("/")
+        for tag in lis:
+            if check == 0:
+                check = 1
+                if node['slug'] == lis[-1]:
+                    break
+            else:
+                    if node['slug'] == lis[a] and node['kind'] == 'Topic':
+                        b = a + 1
+                        for child in node['children']:
+                            if child['slug'] == lis[b]:
+                                node = child
+                                a = a + 1
+                                break
+                            else:
+                                continue
+        if node['slug'] == lis[-1]:
+            link = settings.MEDIA_URL + "styles.css"
+            if node['kind'] == 'Topic':
+                return render(request, 'parent.html', {'node': node, 'link': link})
+            else:
+                return render(request, 'child.html', {'node': node, 'link': link})
+        else:
+            return HttpResponse("Invalid Url")
