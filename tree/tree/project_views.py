@@ -6,27 +6,33 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 
-def generate(request, node, addr, html):
-    if node['slug'] == addr:
-	link = settings.MEDIA_URL + "styles.css"
-        if node['kind'] == 'Topic':
-            html = render(request, 'parent.html', {'node': node , 'link' : link })
-        else:
-            html = render(request, 'child.html', {'node': node , 'link' : link })
-        return html
-    else:
-        if node['kind'] == 'Topic':
-            for child in node['children']:
-                html = generate(request, child, addr, html)
-    	return html
-
-
-
-# load function opens the json file
 def load(request, addr):
-    html = " "
     with open('json1.json', 'r') as json1_file:
         json1_data = json.load(json1_file)
-        html = generate(request, json1_data, addr, html)
-        return html
-
+        node = json1_data
+        check = 0
+        a = 0
+        lis = request.path.strip('/').split("/")
+        for tag in lis:
+            if check == 0:
+                check = 1
+                if node['slug'] == lis[-1]:
+                    break
+            else:
+                    if node['slug'] == lis[a] and node['kind'] == 'Topic':
+                        b = a + 1
+                        for child in node['children']:
+                            if child['slug'] == lis[b]:
+                                node = child
+                                a = a + 1
+                                break
+                            else:
+                                continue
+        if node['slug'] == lis[-1]:
+            link = settings.MEDIA_URL + "styles.css"
+            if node['kind'] == 'Topic':
+                return render(request, 'parent.html', {'node': node, 'link': link})
+            else:
+                return render(request, 'child.html', {'node': node, 'link': link})
+        else:
+            return HttpResponse("Invalid Url")
